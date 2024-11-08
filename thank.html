@@ -1,0 +1,737 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="icon" href="logwthout9.png" type="image/x-icon" clip-path="circle(50% at 50% 50%)">
+    <title>Book Page</title>
+
+</head>
+
+<body>
+
+    <div class="container">
+        <div class="logo">
+            <img src="logwthout9.png" alt="Logo" width="300px" heigh>
+            <h2 id="site-name">Julas Camp</h2>
+        </div>
+        <br>
+
+        <form id="bookingForm">
+            <label for="name" id="name-label">Full Name:</label>
+            <input type="text" id="name" name="name" placeholder="Enter your name" required>
+
+            <label for="email" id="email-label">Email Address:</label>
+            <input type="email" id="email" name="email" placeholder="Enter your email" required>
+
+            <label for="phone" id="phone-label">Phone Number:</label>
+            <input type="tel" id="phone" name="phone" placeholder="Enter your phone number" required
+                pattern="[0-9]{8,15}" title="Please enter a valid phone number (9 to 15 digits)">
+
+            <label for="date" id="date-label">Booking Date:</label>
+            <input type="date" id="date" name="date" required>
+
+
+            <div class="titleSelectTime">
+                <h3 id="periods-title">Choose the perfect time </h3>
+            </div>
+
+            <!--اسعار مخيم وقت الايام العادية-->
+
+            <!-- أسعار مخيم وقت الأيام العادية -->
+            <div class="periods">
+                <div class="period" id="Morning"
+                    onclick="selectPeriod(event, 'Morning', '9:00 AM - 4:00 PM', '25 OMR')">
+                    Morning <br>
+                    9:00 AM - 4:00 PM<br>
+                    <span class="price">25 OMR</span>
+                </div>
+
+                <div class="period" id="Evening"
+                    onclick="selectPeriod(event, 'Evening', '5:00 PM - 12:00 AM', '40 OMR')">
+                    Evening <br>
+                    5:00 PM - 12:00 AM<br>
+                    <span class="price">40 OMR</span>
+                </div>
+
+                <div class="period" id="fullNight"
+                    onclick="selectPeriod(event, 'Full Night', '12:30 AM - 8:00 AM', '30 OMR')">
+                    Full Night <br>
+                    12:30 AM - 8:00 AM<br>
+                    <span class="price">30 OMR</span>
+                </div>
+
+                <div class="period" id="fullDay"
+                    onclick="selectPeriod(event, 'Full Day', '9:00 AM - 12:00 AM', '60 OMR')">
+                    Full Day <br>
+                    9:00 AM - 12:00 AM<br>
+                    <span class="price">60 OMR</span>
+                </div>
+            </div>
+
+            <!-- Checkbox للموافقة على الشروط -->
+            <div class="checkbox-container">
+                <input type="checkbox" id="termsCheckbox">
+                <label for="termsCheckbox">
+                    I agree to the terms and conditions <span id="termsLink"
+                        style="color:  #72a2d2; text-decoration: underline; cursor: pointer;">read more</span>
+                </label>
+            </div>
+
+            <!-- نافذة منبثقة للشروط -->
+            <div id="termsModal" class="modal">
+                <div class="modal-content">
+                    <span class="close" onclick="closeTerms()">&times;</span>
+                    <h2>Terms and Conditions</h2>
+                    <p>
+                        Welcome to Julas Camp! We’re thrilled to have you here. To ensure you have an excellent
+                        experience, please take note of the following:
+                    </p>
+                    <ul>
+                        <li>Booking Methods: Reservations can be made through our online booking system or via any other
+                            method, such as our customer service center.</li>
+                        <li>Payment Requirement: A full payment is required to secure your reservation according to the
+                            applicable rates.</li>
+                        <li>Liability Waiver: The customer assumes all responsibility for any personal injury, loss,
+                            damage, or death that may occur during their reservation period.</li>
+                        <li>Property Damage: Julas Camp is not liable for any loss or damage to property due to
+                            misconduct or negligence by you or your guests. The customer will be responsible for the
+                            full value of any damaged property.</li>
+                        <li>Severability Clause: If any provision of these terms and conditions is deemed illegal,
+                            invalid, or unenforceable for any reason, that provision will be severed without affecting
+                            the validity of the remaining provisions.</li>
+                    </ul>
+                    <h3>We Value Your Time and Happiness</h3>
+                    <ul>
+                        <li>To provide you with a unique experience, please adhere to your scheduled reservation time.
+                            Our scheduling operates on a strict timeline.</li>
+                        <li>You may modify your reservation, including changes to the date and time, up to 4 hours after
+                            your payment has been processed.</li>
+                    </ul>
+                    <p>If you have any inquiries or complaints, please contact us at:</p>
+                    <p>Email: julascamp@gmail.com<br>Phone: +968 94100189</p>
+                    <p>I have read and agree to the terms and conditions.</p>
+                </div>
+            </div>
+
+            <script>
+                document.getElementById('termsLink').onclick = function () {
+                    document.getElementById('termsModal').style.display = "block";
+                }
+
+                function closeTerms() {
+                    document.getElementById('termsModal').style.display = "none";
+                }
+            </script>
+
+
+            <input type="hidden" id="time" name="time">
+
+
+            <div class="Book">
+                <button type="submit">Book</button>
+            </div>
+        </form>
+        <div class="note" id="Note"> You can make the payment using the phone number :
+            <a href="tel:+96894100189" id="termsLink" style="color: #72a2d2;">94100189</a><br>
+            Please send the receipt to confirm your booking.
+        </div>
+
+    </div>
+    <!-- نافذة منبثقة للنجاح -->
+    <div id="successModal" class="modal">
+        <div class="modal-content">
+            <span class="close">&times;</span>
+            <p>Booking successful</p>
+        </div>
+    </div>
+
+    <!-- نافذة منبثقة للخطأ -->
+    <div id="errorModal" class="modal">
+        <div class="modal-content">
+            <span class="close">&times;</span>
+            <p>Error Message</p>
+        </div>
+    </div>
+</body>
+
+</html>
+
+<script type="module">
+    // استيراد وظائف Firebase اللازمة
+    import { initializeApp } from "https://www.gstatic.com/firebasejs/11.0.1/firebase-app.js";
+    import { getDatabase, ref, get, set } from "https://www.gstatic.com/firebasejs/11.0.1/firebase-database.js";
+
+    // إعدادات Firebase
+    const firebaseConfig = {
+        apiKey: "AIzaSyCnsZC54ykXrvUh4dYSMpjvmUurcGQ3SN0",
+        authDomain: "test-95047.firebaseapp.com",
+        databaseURL: "https://test-95047-default-rtdb.firebaseio.com",
+        projectId: "test-95047",
+        storageBucket: "test-95047.firebasestorage.app",
+        messagingSenderId: "1026218475899",
+        appId: "1:1026218475899:web:56ee72582db64c3d067dde"
+    };
+
+    // تهيئة Firebase
+    const app = initializeApp(firebaseConfig);
+    const database = getDatabase(app);
+
+    // معالجة اختيار الفترة
+    window.selectPeriod = function (event, period) {
+        document.getElementById('time').value = period;
+        const periods = document.getElementsByClassName('period');
+        for (let i = 0; i < periods.length; i++) {
+            periods[i].style.backgroundColor = '#333';
+        }
+        event.target.style.backgroundColor = '#555';
+    }
+
+    
+
+    // دالة لمعرفة إذا كان اليوم عطلة أسبوعية
+    function isWeekend(day) {
+        // إذا كان اليوم هو الخميس (3) أو الجمعة (4) أو السبت (5)
+        return (day === 3 || day === 4 || day === 5);
+    }
+
+    // دالة لتحديد الأسعار بناءً على اليوم و شهر المختار
+    function updatePrices() {
+        var dateInput = document.getElementById('date').value;
+        if (dateInput) {
+            var selectedDate = new Date(dateInput);
+            var dayOfWeek = selectedDate.getDay(); // الحصول على اليوم المختار (0-6)
+            var month = selectedDate.getMonth() + 1; // الحصول على الشهر (1-12)
+
+            var Morning = document.getElementById('Morning');
+            var Evening = document.getElementById('Evening');
+            var fullNight = document.getElementById('fullNight');
+            var fullDay = document.getElementById('fullDay'); // الفترة الجديدة
+
+            // تحقق إذا كان الشهر هو أكتوبر (10)
+            if (month === 10) {
+                if (isWeekend(dayOfWeek)) {
+                    // أسعار عطلة نهاية الأسبوع في أكتوبر
+                    Morning.querySelector('.price').textContent = '25 OMR';
+                    Evening.querySelector('.price').textContent = '40 OMR';
+                    fullNight.querySelector('.price').textContent = '30 OMR';
+                    fullDay.querySelector('.price').textContent = '60 OMR'; // سعر الفترة الجديدة
+                } else {
+                    // أسعار أيام الأسبوع في أكتوبر
+                    Morning.querySelector('.price').textContent = '20 OMR';
+                    Evening.querySelector('.price').textContent = '30 OMR';
+                    fullNight.querySelector('.price').textContent = '30 OMR';
+                    fullDay.querySelector('.price').textContent = '45 OMR'; // سعر الفترة الجديدة
+                }
+            } else {
+                // إذا كان الشهر ليس أكتوبر
+                if (isWeekend(dayOfWeek)) {
+                    // أسعار عطلة نهاية الأسبوع في أكتوبر
+                    Morning.querySelector('.price').textContent = '25 OMR';
+                    Evening.querySelector('.price').textContent = '40 OMR';
+                    fullNight.querySelector('.price').textContent = '30 OMR';
+                    fullDay.querySelector('.price').textContent = '60 OMR'; // سعر الفترة الجديدة
+                } else {
+                    // أسعار أيام الأسبوع في أكتوبر
+                    Morning.querySelector('.price').textContent = '20 OMR';
+                    Evening.querySelector('.price').textContent = '30 OMR';
+                    fullNight.querySelector('.price').textContent = '30 OMR';
+                    fullDay.querySelector('.price').textContent = '45 OMR'; // سعر الفترة الجديدة
+                }
+            }
+        }
+    }
+    document.getElementById('date').addEventListener('change', updatePrices); // تحديث الأسعار عند اختيار التاريخ
+
+    // إدارة نموذج الحجز
+    document.getElementById('bookingForm').addEventListener('submit', function (event) {
+        event.preventDefault();
+
+        const form = event.target;
+        const name = form.name.value.trim();
+        const email = form.email.value.trim();
+        const phone = form.phone.value.trim();
+        const date = form.date.value;
+        const period = form.time.value;
+        const termsAccepted = document.getElementById('termsCheckbox').checked;
+
+        if (!name || !email || !phone || !date || !period) {
+            alert("Please fill in all required fields.");
+            return;
+        }
+
+        
+        const selectedDate = new Date(date);
+        const today = new Date();
+        today.setHours(0, 0, 0, 0);
+
+        // حساب التاريخ بعد يومين من اليوم الحالي
+        const minDate = new Date(today);
+        minDate.setDate(today.getDate() + 1); // إضافة يوم واحد (أي الحجز يجب أن يكون بعد يوم)
+
+        // التحقق من أن التاريخ المحدد أكبر من اليوم الحالي (لا يمكن الحجز في نفس اليوم)
+        if (selectedDate <= minDate) {
+            alert("The selected period is unavailable. Please choose another period.");
+            return;
+        }
+        if (!termsAccepted) {
+            alert("You must agree to the terms and conditions before booking.");
+            return;
+        }
+
+        // تحقق من الحجز في Firebase قبل إدخال البيانات
+        checkBookingAvailability(date, period, function(isAvailable) {
+            if (isAvailable) {
+                sendBookingDetails(name, email, phone, date, period);
+                storeBookingInFirebase(name, email, phone, date, period);
+            } else {
+                alert('The selected period is unavailable. Please choose another period.');
+            }
+        });
+    });
+
+    // دالة للتحقق من الحجز في Firebase
+    function checkBookingAvailability(date, selectedPeriod, callback) {
+        const bookingDateRef = ref(database, 'bookings/' + date);
+
+        get(bookingDateRef).then(snapshot => {
+            if (snapshot.exists()) {
+                const bookings = snapshot.val();
+
+                // تحقق من حجز نفس الفترة في نفس اليوم
+                if (bookings[selectedPeriod]) {
+                    callback(false); // الفترة محجوزة
+                    return;
+                }
+
+                // تحقق من التعارض مع "ليلة كاملة"
+                if (selectedPeriod === 'Full Day') {
+                    if (bookings['Morning'] || bookings['Evening']) {
+                        callback(false); // تعارض مع فترة صباح أو مساء
+                        return;
+                    }
+                } else if (selectedPeriod === 'Morning' || selectedPeriod === 'Evening') {
+                    if (bookings['Full Day']) {
+                        callback(false); // تعارض مع "ليلة كاملة"
+                        return;
+                    }
+                }
+            }
+
+            // إذا لم يكن هناك تعارض
+            callback(true);
+        });
+    }
+
+    // إرسال تفاصيل الحجز عبر Google Apps Script
+    function sendBookingDetails(name, email, phone, date, period) {
+        const data = {
+            'name': name,
+            'email': email,
+            'phone': phone,
+            'date': date,
+            'period': period
+        }; 
+             //https://script.google.com/macros/s/AKfycbyP-24Z2a2o_9VWHu7iFcdWTIArT0KdPi-WgDjPdqfOhk35aVE08PKiHLJcXaS7r1g/exec
+             //https://script.google.com/macros/s/AKfycbyhHF3tk-5p44yDp0emvuaNgHSFFyoBivXERh8wXukMKHK7Ktp6OHlD5WTgR067bZG3/exec
+        fetch('https://script.google.com/macros/s/AKfycbyP-24Z2a2o_9VWHu7iFcdWTIArT0KdPi-WgDjPdqfOhk35aVE08PKiHLJcXaS7r1g/exec', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/x-www-form-urlencoded',
+            },
+            body: new URLSearchParams(data).toString()
+        })
+            .then(response => response.text())
+            .then(result => {
+                console.log('Success:', result);
+                alert('Booking completed successfully');
+                setTimeout(() => {
+                    window.location.href = 'thankyou.html';
+                }, 1000);
+            })
+            .catch(error => {
+                console.error('Error:', error);
+                alert('An error occurred during booking.');
+            });
+    }
+
+    // تخزين تفاصيل الحجز في Firebase
+    function storeBookingInFirebase(name, email, phone, date, period) {
+        const bookingId = Date.now(); // إنشاء معرف فريد لكل حجز باستخدام الوقت الحالي
+        const bookingRef = ref(database, 'bookings/' + date + '/' + period);
+
+        set(bookingRef, {
+            name: name,
+            email: email,
+            phone: phone,
+            date: date,
+            period: period
+        })
+            .then(() => {
+                console.log("Booking successfully saved in Firebase.");
+            })
+            .catch(error => {
+                console.error("An error occurred while saving the booking in Firebase:", error);
+            });
+    }
+    
+</script>
+
+
+<style>
+    /* استيراد الخطوط من Google Fonts */
+    @import url('https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700&family=Tajawal:wght@400;500;700&display=swap');
+
+    body {
+        font-family: 'Roboto', 'Tajawal', sans-serif;
+        background-color: #000000;
+        color: #e3e3e3;
+        margin: 0;
+        padding: 0;
+
+    }
+
+    /* استخدام خط 'Tajawal' للنصوص العربية وخط 'Roboto' للنصوص الإنجليزية */
+    body {
+        font-family: 'Roboto', 'Tajawal', sans-serif;
+        animation: slideUp 1s ease forwards;
+        animation-delay: 1s;
+        transform: translateY(50px);
+        box-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
+        opacity: 0;
+    }
+
+    .custom-icon {
+        width: 30px;
+        height: 30px;
+        /* إضافة أي تنسيقات أخرى ترغب فيها */
+        border-radius: 50%;
+        /* لتحويلها إلى شكل دائري إذا أردت */
+        clip-path: circle(50% at 50% 50%);
+    }
+
+
+    .back-icon {
+        position: absolute;
+        top: 20px;
+        left: 20px;
+        font-size: 24px;
+        text-decoration: none;
+        color: white;
+        display: flex;
+        align-items: center;
+    }
+
+    .back-icon svg {
+        width: 24px;
+        height: 24px;
+        margin-right: 8px;
+        fill: white;
+    }
+
+    .container {
+        max-width: 600px;
+        margin: 50px auto;
+        background: #000;
+        padding: 20px;
+        border-radius: 12px;
+    }
+
+    .periods-title {
+        font-size: 1px;
+    }
+
+    .logo {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        margin-bottom: 20px;
+    }
+
+    .logo img {
+        max-width: 100px;
+        margin-right: 10px;
+        clip-path: circle(50% at 50% 50%);
+    }
+
+    .title {
+        text-align: center;
+        margin-bottom: 15px;
+        font-size: 9px;
+        /* تصغير حجم الخط */
+        font-weight: 300;
+        /* استخدام وزن خط أخف */
+        color: #eee;
+        /* تغيير اللون لتكون أكثر جاذبية */
+    }
+
+    .periods {
+        display: flex;
+        flex-direction: column;
+        gap: 15px;
+    }
+
+    .period {
+        padding: 9px;
+        background: #333;
+        border-radius: 8px;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        font-size: 13px;
+        text-align: left;
+        border: 1px solid #555;
+        line-height: 1.5;
+    }
+
+    .period:hover {
+        background: #444;
+        cursor: pointer;
+    }
+
+    .period .details {
+        display: flex;
+        align-items: center;
+    }
+
+    .period .time,
+    .period .price {
+        font-size: 13px;
+        color: #ddd;
+        margin-left: 20px;
+    }
+
+    .period .price {
+        color: #ffffffec;
+        font-weight: 700;
+    }
+
+    label {
+        display: block;
+        margin-bottom: 4px;
+        font-weight: 500;
+        font-size: 13px;
+        color: #fdfdfdf5;
+        /* تغيير اللون إلى السكري */
+    }
+
+    input,
+    select {
+        width: calc(100% - 22px);
+        /* حساب المسافة حول الحقول */
+        padding: 16px;
+        margin-bottom: 9px;
+        border: 1px solid #555;
+        border-radius: 8px;
+        background: rgba(255, 255, 255, 0.2);
+        /* خلفية شفافة */
+        color: #fff;
+        font-size: 12px;
+    }
+
+    input::placeholder {
+        color: #ddddddc3;
+    }
+
+    .titleSelectTime {
+        font-size: 16px;
+        text-align: center;
+    }
+
+    .Book button {
+        padding: 12px;
+        background: #ff6600;
+        color: #fff;
+        border: none;
+        border-radius: 8px;
+        cursor: pointer;
+        width: 100%;
+        font-size: 20px;
+        border: 1px solid #fca063;
+        font-weight: 500;
+        margin: 20px auto;
+        /* توسيط الزر عمودياً وأفقياً */
+        display: block;
+        /* التأكد من أن الزر يعتبر عنصر بلوك */
+        transition: background 0.3s ease;
+    }
+
+    button:hover {
+        background: #e65c00;
+    }
+
+    .lang-switch {
+        text-align: center;
+        margin-top: 20px;
+    }
+
+    .lang-switch button {
+        background: #555;
+        border: none;
+        padding: 10px 20px;
+        color: #fff;
+        cursor: pointer;
+        margin: 0 10px;
+        /* تقليل المسافة بين الأزرار */
+        font-size: 16px;
+        margin-top: 10px;
+        border-radius: 8px;
+        font-weight: 500;
+        width: 25%;
+        transition: background 0.3s ease;
+        display: inline-block;
+        /* التأكد من أن الأزرار تكون بجانب بعضها */
+    }
+
+    .lang-switch button:hover {
+        background: #666;
+    }
+
+    .note {
+        font-size: 15px;
+        color: #ddd;
+        margin-top: 20px;
+        text-align: center;
+    }
+
+    .form-group {
+        margin-bottom: 15px;
+    }
+
+    .form-group label {
+        display: block;
+        margin-bottom: 5px;
+        font-weight: bold;
+        color: #e3e3e3;
+    }
+
+    .form-group input {
+        width: 100%;
+        padding: 10px;
+        border: 1px solid #333;
+        border-radius: 8px;
+        background: #222;
+        color: #e3e3e3;
+    }
+
+    .form-group input::placeholder {
+        color: #aaa;
+    }
+
+    .form-group button {
+        width: 100%;
+        padding: 10px;
+        border: none;
+        border-radius: 8px;
+        background: #555;
+        color: #e3e3e3;
+        font-size: 16px;
+        cursor: pointer;
+        transition: background-color 0.3s;
+    }
+
+    .form-group button:hover {
+        background-color: #666;
+    }
+
+    .modal {
+        display: none;
+        position: fixed;
+        z-index: 1;
+        left: 0;
+        top: 0;
+        width: 100%;
+        height: 100%;
+        overflow: auto;
+        background-color: rgba(0, 0, 0, 0.8);
+        padding-top: 60px;
+    }
+
+    .modal-content {
+        background-color: #222;
+        margin: 5% auto;
+        padding: 20px;
+        border: 1px solid #333;
+        width: 80%;
+        max-width: 300px;
+        border-radius: 12px;
+        color: #e3e3e3;
+    }
+
+    .close {
+        color: #aaa;
+        float: right;
+        font-size: 28px;
+        font-weight: bold;
+    }
+
+    .close:hover,
+    .close:focus {
+        color: #e3e3e3;
+        text-decoration: none;
+        cursor: pointer;
+    }
+
+    a {
+        color: white;
+        text-decoration: none;
+    }
+
+    .checkbox-container {
+        display: flex;
+        align-items: center;
+        /* لضبط المحاذاة العمودية للعناصر */
+        justify-content: flex-start;
+        /* لجعل مربع الاختيار والنص في جهة واحدة */
+        width: 100%;
+        /* عرض الحاوية بحيث يشغل العرض الكامل */
+        margin-top: 20px;
+        /* مسافة أعلى */
+        margin-bottom: 20px;
+        /* مسافة أسفل */
+    }
+
+    .checkbox-container input {
+        width: 20px;
+        /* عرض مربع الاختيار */
+        height: 20px;
+        /* ارتفاع مربع الاختيار */
+        margin-right: 10px;
+        /* مسافة بين مربع الاختيار والنص */
+        accent-color: #b1b4b2;
+        /* لون مربع الاختيار */
+    }
+
+    .checkbox-container label {
+        font-family: 'Roboto', sans-serif;
+        /* نوع الخط */
+        font-size: 13px;
+        /* حجم الخط */
+        color: #ffffffda;
+        /* لون النص */
+    }
+
+    /* حركات */
+    @keyframes fadeIn {
+        0% {
+            opacity: 0;
+        }
+
+        100% {
+            opacity: 1;
+        }
+    }
+
+    @keyframes slideUp {
+        0% {
+            opacity: 0;
+            transform: translateY(50px);
+        }
+
+        100% {
+            opacity: 1;
+            transform: translateY(0);
+        }
+    }
+</style>
